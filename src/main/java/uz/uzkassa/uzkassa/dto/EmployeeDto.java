@@ -1,7 +1,6 @@
 package uz.uzkassa.uzkassa.dto;
 
 import lombok.Data;
-import uz.uzkassa.uzkassa.entity.Company;
 
 @Data
 public class EmployeeDto {
