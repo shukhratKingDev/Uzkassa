@@ -5,7 +5,7 @@ import uz.uzkassa.uzkassa.dto.ResponseDto;
 
 public interface CompanyService {
 
-    ResponseDto editCompany(Long id, CompanyDto companyDto);
+    ResponseDto edit(Long id, CompanyDto companyDto);
 
-    ResponseDto blockCompany(Long id);
+    ResponseDto block(Long id);
 }

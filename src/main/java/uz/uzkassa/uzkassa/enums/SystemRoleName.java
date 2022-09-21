@@ -1,4 +1,4 @@
-package uz.uzkassa.uzkassa.entity.enums;
+package uz.uzkassa.uzkassa.enums;
 
 import lombok.Data;
 

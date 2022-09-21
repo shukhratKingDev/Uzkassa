@@ -9,8 +9,8 @@ import uz.uzkassa.uzkassa.dto.EmployeeDto;
 import uz.uzkassa.uzkassa.dto.ResponseDto;
 import uz.uzkassa.uzkassa.entity.Company;
 import uz.uzkassa.uzkassa.entity.Employee;
-import uz.uzkassa.uzkassa.entity.enums.SystemRoleName;
-import uz.uzkassa.uzkassa.exceptions.UnAuthorizedOperationException;
+import uz.uzkassa.uzkassa.enums.SystemRoleName;
+import uz.uzkassa.uzkassa.exceptions.NotAllowedException;
 import uz.uzkassa.uzkassa.repository.EmployeeRepository;
 import uz.uzkassa.uzkassa.service.EmployeeService;
 
@@ -26,7 +26,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public ResponseDto addEmployee(EmployeeDto employeeDto) {
+    public ResponseDto add(EmployeeDto employeeDto) {
         if (!authorize().equals(SystemRoleName.SYSTEM_ROLE_ADMIN)) {
             return new ResponseDto("You can not do this operation. This can be done only by Admin",false);
         }
@@ -44,7 +44,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public ResponseDto editEmployee(Long id,EmployeeDto employeeDto) {
+    public ResponseDto update(Long id,EmployeeDto employeeDto) {
         if (authorize().equals(SystemRoleName.SYSTEM_ROLE_ADMIN)) {
             return new ResponseDto("You can not do this operation. This can be done only by Admin",false);
         }
@@ -62,7 +62,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public ResponseDto deleteEmployee(Long id) {
+    public ResponseDto delete(Long id) {
         if (!authorize().equals(SystemRoleName.SYSTEM_ROLE_ADMIN)) {
             return new ResponseDto("You can not do this operation. This can be done only by Admin",false);
         }
@@ -75,9 +75,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployeeById(Long id) {
+    public Employee get(Long id) {
         if (authorize().equals(SystemRoleName.SYSTEM_ROLE_ADMIN)) {
-            throw new UnAuthorizedOperationException("This operation can be done only by Admin");
+            throw new NotAllowedException();
         }
         Optional<Employee> optionalEmployee = employeeRepository.findById(id);
         if (!optionalEmployee.isPresent()) {
@@ -87,7 +87,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> getAllEmployees() {
+    public List<Employee> getAll() {
         return employeeRepository.findAll();
     }
 
@@ -103,7 +103,5 @@ public Company getCompany(){
     Employee employee=(Employee)authentication.getPrincipal();
     return employee.getCompany();
 }
-
-
 
 }

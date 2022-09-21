@@ -12,22 +12,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import uz.uzkassa.uzkassa.controller.AuthController;
-import uz.uzkassa.uzkassa.controller.EmployeeController;
-import uz.uzkassa.uzkassa.dto.EmployeeDto;
 import uz.uzkassa.uzkassa.dto.ResponseDto;
 import uz.uzkassa.uzkassa.dto.SignIn;
 import uz.uzkassa.uzkassa.dto.SignUpDto;
-import uz.uzkassa.uzkassa.entity.Company;
-import uz.uzkassa.uzkassa.entity.Employee;
-import uz.uzkassa.uzkassa.entity.enums.SystemRoleName;
+import uz.uzkassa.uzkassa.dto.VerificationDto;
 import uz.uzkassa.uzkassa.service.AuthService;
-import uz.uzkassa.uzkassa.service.EmployeeService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -64,7 +55,7 @@ assertThat(actualJsonResponse).isEqualToIgnoringWhitespace(expectedJsonResponse)
 
     String emailCode="1236";
     String email="shukhrat1201@gmail.com";
-    Mockito.when(authService.verifyEmail(email,emailCode)).thenReturn(new ResponseDto("Email successfully verified",true));
+    Mockito.when(authService.verifyEmail(new VerificationDto("",""))).thenReturn(new ResponseDto("Email successfully verified",true));
     String url="/api/auth/verify";
 ResponseDto responseDto=new ResponseDto("Email successfully verified",true);
     MvcResult mvcResult=mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();

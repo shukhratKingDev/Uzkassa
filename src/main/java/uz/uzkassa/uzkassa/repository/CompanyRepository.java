@@ -6,5 +6,5 @@ import uz.uzkassa.uzkassa.entity.Company;
 
 
 @Repository
-public interface CompanyRepository extends JpaRepository<Company,Long> {
+public interface CompanyRepository extends JpaRepository<Company, Long> {
 }

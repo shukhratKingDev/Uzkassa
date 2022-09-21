@@ -14,45 +14,46 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/employee")
+@RequestMapping("/api/employees")
 public class EmployeeController {
     private EmployeeService employeeService;
-@Autowired
+
+    @Autowired
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
-    @PostMapping("/add")
-    public HttpEntity<ResponseDto> addEmployee( @Valid @RequestBody EmployeeDto employeeDto){
-       ResponseDto responseDto= employeeService.addEmployee(employeeDto);
-        return ResponseEntity.status(responseDto.isSuccess()? HttpStatus.CREATED:HttpStatus.UNAUTHORIZED).body(responseDto);
+    @PostMapping()
+    public HttpEntity<ResponseDto> add(@Valid @RequestBody EmployeeDto employeeDto) {
+        ResponseDto responseDto = employeeService.add(employeeDto);
+        return ResponseEntity.status(responseDto.isSuccess() ? HttpStatus.CREATED : HttpStatus.UNAUTHORIZED).body(responseDto);
 
     }
 
     @PutMapping("/{id}")
-    public HttpEntity<ResponseDto>editEmployee(@PathVariable Long id,@PathVariable EmployeeDto employeeDto){
-    ResponseDto responseDto=employeeService.editEmployee(id,employeeDto);
-     return ResponseEntity.status(responseDto.isSuccess()?HttpStatus.OK:HttpStatus.NOT_FOUND).body(responseDto);
+    public HttpEntity<ResponseDto> update(@PathVariable Long id, @RequestBody EmployeeDto employeeDto) {
+        ResponseDto responseDto = employeeService.update(id, employeeDto);
+        return ResponseEntity.status(responseDto.isSuccess() ? HttpStatus.OK : HttpStatus.NOT_FOUND).body(responseDto);
     }
 
     @DeleteMapping("/{id}")
-    public HttpEntity<ResponseDto> deleteEmployee(@PathVariable Long id){
-    ResponseDto responseDto=employeeService.deleteEmployee(id);
-    return ResponseEntity.status(responseDto.isSuccess()?HttpStatus.OK:HttpStatus.NOT_FOUND).body(responseDto);
+    public HttpEntity<ResponseDto> delete(@PathVariable Long id) {
+        ResponseDto responseDto = employeeService.delete(id);
+        return ResponseEntity.status(responseDto.isSuccess() ? HttpStatus.OK : HttpStatus.NOT_FOUND).body(responseDto);
     }
 
 
     @GetMapping("/{id}")
-    public HttpEntity<Employee> getEmployeeById(@PathVariable Long id){
-    Employee employee=employeeService.getEmployeeById(id);
-    return ResponseEntity.status(employee != null ?HttpStatus.OK:HttpStatus.NOT_FOUND).body(employee);
+    public HttpEntity<Employee> get(@PathVariable Long id) {
+        Employee employee = employeeService.get(id);
+        return ResponseEntity.status(employee != null ? HttpStatus.OK : HttpStatus.NOT_FOUND).body(employee);
 
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Employee>> getAllEmployees(){
+    public ResponseEntity<List<Employee>> getAll() {
 
-        return ResponseEntity.status(HttpStatus.OK).body(employeeService.getAllEmployees());
+        return ResponseEntity.status(HttpStatus.OK).body(employeeService.getAll());
     }
 
 }

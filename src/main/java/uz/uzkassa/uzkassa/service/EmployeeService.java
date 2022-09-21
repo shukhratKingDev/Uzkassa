@@ -7,13 +7,13 @@ import uz.uzkassa.uzkassa.entity.Employee;
 import java.util.List;
 
 public interface EmployeeService {
-    ResponseDto addEmployee(EmployeeDto employeeDto);
+    ResponseDto add(EmployeeDto employeeDto);
 
-    ResponseDto editEmployee(Long id,EmployeeDto employeeDto);
+    ResponseDto update(Long id,EmployeeDto employeeDto);
 
-    ResponseDto deleteEmployee(Long id);
+    ResponseDto delete(Long id);
 
-    Employee getEmployeeById(Long id);
+    Employee get(Long id);
 
-    List<Employee> getAllEmployees();
+    List<Employee> getAll();
 }
