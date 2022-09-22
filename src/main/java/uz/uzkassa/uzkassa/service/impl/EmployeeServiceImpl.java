@@ -11,6 +11,7 @@ import uz.uzkassa.uzkassa.entity.Company;
 import uz.uzkassa.uzkassa.entity.Employee;
 import uz.uzkassa.uzkassa.enums.SystemRoleName;
 import uz.uzkassa.uzkassa.exceptions.NotAllowedException;
+import uz.uzkassa.uzkassa.exceptions.NotFoundException;
 import uz.uzkassa.uzkassa.repository.EmployeeRepository;
 import uz.uzkassa.uzkassa.service.EmployeeService;
 
@@ -18,8 +19,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+
 public class EmployeeServiceImpl implements EmployeeService {
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
 @Autowired
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
@@ -27,12 +29,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public ResponseDto add(EmployeeDto employeeDto) {
-        if (!authorize().equals(SystemRoleName.SYSTEM_ROLE_ADMIN)) {
-            return new ResponseDto("You can not do this operation. This can be done only by Admin",false);
-        }
 
         if (employeeRepository.existsByUsername(employeeDto.getUsername())) {
-            return new ResponseDto("This username already exist.",false);
+            throw new NotFoundException();
         }
         Employee employee=new Employee(
                 employeeDto.getFirstName(),employeeDto.getLastName(),employeeDto.getUsername()
@@ -45,9 +44,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public ResponseDto update(Long id,EmployeeDto employeeDto) {
-        if (authorize().equals(SystemRoleName.SYSTEM_ROLE_ADMIN)) {
-            return new ResponseDto("You can not do this operation. This can be done only by Admin",false);
-        }
         Optional<Employee> optionalEmployee =  employeeRepository.findById(id);
         if (!optionalEmployee.isPresent()) {
             return new ResponseDto("Employee with this id not found",false);

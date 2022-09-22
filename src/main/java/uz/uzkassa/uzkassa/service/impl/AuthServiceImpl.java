@@ -2,6 +2,7 @@ package uz.uzkassa.uzkassa.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -116,8 +117,9 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
             message.setSubject("Verify email");
             message.setText("http://localhost:8183/api/auth/verifyEmail?email=" + email + "&emailCode=" + emailCode);
             javaMailSender.send(message);
-        } catch (Exception e) {
+        } catch (MailAuthenticationException e) {
             log.error(e.getMessage(), e);
+            throw new MailAuthenticationException("Mail could not send");
         }
     }
 
